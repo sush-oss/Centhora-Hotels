@@ -1,5 +1,6 @@
 ﻿using Centhora_Hotels.Models.DTO;
 using Centhora_Hotels.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Centhora_Hotels.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
+        [Authorize]
         [Route("api/[controller]/getAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
@@ -36,6 +38,7 @@ namespace Centhora_Hotels.Controllers
         }
 
         // POST api/<UserController>
+        [AllowAnonymous]
         [HttpPost]
         [Route("api/[controller]/addNewUser")]
         public async Task<ActionResult<PostUserDto>> AddNewUser([FromForm]PostUserDto user, IFormFile file)
@@ -47,6 +50,7 @@ namespace Centhora_Hotels.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut]
+        [Authorize]
         [Route("api/[controller]/updateUser/{id}")]
         public async Task<ActionResult<UserDto>> UpdateUser(int id, UserDto user)
         {
@@ -66,6 +70,7 @@ namespace Centhora_Hotels.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete]
+        [Authorize]
         [Route("api/[controller]/removeUser/{id}")]
         public async Task<ActionResult> RemoveUser(int id)
         {
