@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Centhora_Hotels.DB_Context
 {
-    public class BeachWoodDbContext : DbContext
+    public class CenthoraDbContext : DbContext
     {
         protected readonly IConfiguration _configuration;
-        public BeachWoodDbContext(IConfiguration configuration)
+        public CenthoraDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
         }

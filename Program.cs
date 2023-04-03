@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Registering the Db Context
-builder.Services.AddDbContext<BeachWoodDbContext>();
+builder.Services.AddDbContext<CenthoraDbContext>();
 
 // Injecting repository and repository interface
 builder.Services.AddScoped<IUserRepository, UserRepository>();

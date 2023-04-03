@@ -10,15 +10,15 @@ namespace Centhora_Hotels.Repository.Repo
 {
     public class BookingRepository : IBookingRepository, IDisposable
     {
-        private readonly BeachWoodDbContext _beachWood;
+        private readonly CenthoraDbContext _centhora;
         private readonly IMapper _mapper;
         private readonly ICalculateRoomPrices _calculateRoom;
 
         private bool disposedValue = false;
 
-        public BookingRepository(BeachWoodDbContext beachWood, IMapper mapper, ICalculateRoomPrices calculateRoom)
+        public BookingRepository(CenthoraDbContext centhora, IMapper mapper, ICalculateRoomPrices calculateRoom)
         {
-            this._beachWood = beachWood;
+            this._centhora = centhora;
             this._mapper = mapper;
             this._calculateRoom = calculateRoom;
 
@@ -26,7 +26,7 @@ namespace Centhora_Hotels.Repository.Repo
 
         public async Task<bool> CreateBooking(BookingDto dto)
         {
-            var roomType = await _beachWood.Rooms.FindAsync(dto.RoomTypeId);
+            var roomType = await _centhora.Rooms.FindAsync(dto.RoomTypeId);
 
             if (roomType == null)
             {
@@ -40,8 +40,8 @@ namespace Centhora_Hotels.Repository.Repo
                 // Calculate the total price for the booking
                 booking.TotalPrice = _calculateRoom.CalculateTotalPrice(dto.NumOfRoomsBooked, roomType.RoomPrice.Price);
 
-                _beachWood.Bookings.Add(booking);
-                await _beachWood.SaveChangesAsync();
+                _centhora.Bookings.Add(booking);
+                await _centhora.SaveChangesAsync();
 
                 return true;
             }            
@@ -50,20 +50,20 @@ namespace Centhora_Hotels.Repository.Repo
         public async Task DeleteBooking(int id)
         {
             // Check if the Booking exists
-            var existingBooking = await _beachWood.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+            var existingBooking = await _centhora.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
 
             // If the booking exists, then remove it
             if (existingBooking != null)
             {
-                _beachWood.Bookings.Remove(existingBooking);
-                await _beachWood.SaveChangesAsync();
+                _centhora.Bookings.Remove(existingBooking);
+                await _centhora.SaveChangesAsync();
 
             }
         }
 
         public async Task<IEnumerable<BookingDto>> GetAllBookings()
         {
-            var allBookings = await _beachWood.Bookings.ToListAsync();
+            var allBookings = await _centhora.Bookings.ToListAsync();
             return _mapper.Map<IEnumerable<BookingDto>>(allBookings);
         }
 
@@ -74,7 +74,7 @@ namespace Centhora_Hotels.Repository.Repo
                 // If the id is null or less than 0, returning an empty collection.
                 return new List<BookingDto>();
             }
-            var userBookings = await _beachWood.Bookings
+            var userBookings = await _centhora.Bookings
                 .Where(b => b.UserId == id)
                 .ToListAsync();
 
@@ -85,7 +85,7 @@ namespace Centhora_Hotels.Repository.Repo
 
         public async Task<bool> UpdateBooking(int bookingId, UpdateBookingDto dto)
         {
-            var existingBooking = await _beachWood.Bookings.FirstOrDefaultAsync(b => b.BookingId == bookingId);
+            var existingBooking = await _centhora.Bookings.FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (existingBooking != null)
             {
                 existingBooking.CheckIn_Date = dto.CheckIn_Date;
@@ -101,7 +101,7 @@ namespace Centhora_Hotels.Repository.Repo
                     existingBooking.NumOfRoomsBooked = dto.NumOfRoomsBooked;
 
                     // Get the RoomType entity for the new RoomTypeId
-                    var newRoomType = await _beachWood.Rooms.FirstOrDefaultAsync(rt => rt.RoomTypeId == dto.RoomTypeId);
+                    var newRoomType = await _centhora.Rooms.FirstOrDefaultAsync(rt => rt.RoomTypeId == dto.RoomTypeId);
                     if (newRoomType != null)
                     {
                         // Calculate the new TotalPrice using the ICalculateTotalRoomPrices instance
@@ -116,12 +116,12 @@ namespace Centhora_Hotels.Repository.Repo
                     }
 
                     // Save changes to the database
-                    await _beachWood.SaveChangesAsync();
+                    await _centhora.SaveChangesAsync();
                     return true;
                 }
 
                 // Save changes to the database
-                await _beachWood.SaveChangesAsync();
+                await _centhora.SaveChangesAsync();
                 return true;
 
             }
