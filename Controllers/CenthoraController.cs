@@ -45,11 +45,12 @@ namespace Centhora_Hotels.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, logingUser.UserName)
+                    new Claim(ClaimTypes.Name, logingUser.UserName),
+                    // ToDo: add the role new Claim(ClaimTypes.Role, logingUser.Role)
                 }),
                 Issuer = issure,
                 Audience = audience,
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(20),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
