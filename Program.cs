@@ -1,3 +1,4 @@
+using Centhora_Hotels.Controllers;
 using Centhora_Hotels.DB_Context;
 using Centhora_Hotels.InternalServices.Calculate_Room_Price;
 using Centhora_Hotels.InternalServices.CenthoraAuth;
@@ -70,5 +71,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// testing minimal APIs
+app.MapBookingMinimalApiEndpoints();
 
 app.Run();
