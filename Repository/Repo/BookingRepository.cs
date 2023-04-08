@@ -27,8 +27,9 @@ namespace Centhora_Hotels.Repository.Repo
         public async Task<bool> CreateBooking(BookingDto dto)
         {
             var roomType = await _centhora.Rooms.FindAsync(dto.RoomTypeId);
+            var roomPrice =  await _centhora.Prices.FirstOrDefaultAsync(p => p.RoomTypeId == dto.RoomTypeId);
 
-            if (roomType == null)
+            if (roomType == null && roomPrice == null)
             {
                 return false;
             }
@@ -38,7 +39,7 @@ namespace Centhora_Hotels.Repository.Repo
                 booking.RoomType = roomType;
 
                 // Calculate the total price for the booking
-                booking.TotalPrice = _calculateRoom.CalculateTotalPrice(dto.NumOfRoomsBooked, roomType.RoomPrice.Price);
+                booking.TotalPrice = _calculateRoom.CalculateTotalPrice(dto.NumOfRoomsBooked, roomPrice.Price);
 
                 _centhora.Bookings.Add(booking);
                 await _centhora.SaveChangesAsync();
