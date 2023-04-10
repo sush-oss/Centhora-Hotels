@@ -7,7 +7,7 @@ on:
  
 env:
  AZURE_WEBAPP_NAME: Hotel-Management-System
- AZURE_WEBAPP_PACKAGE_PATH: " . "
+ AZURE_WEBAPP_PACKAGE_PATH: "."
            
 jobs:
  publish:
