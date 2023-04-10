@@ -24,7 +24,7 @@ jobs:
      run: dotnet build ./Centhora-Hotels.sln --configuration Release 
      
    - name: Test with the dotnet CLI
-     run: dotnet test .Centhora-Hotels.sln --configuration Release
+     run: dotnet test ./Centhora-Hotels.sln --configuration Release
      
    - name: Publish
      run: dotnet publish ./Centhora-Hotels.sln --configuration Release 
